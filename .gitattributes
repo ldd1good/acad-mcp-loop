@@ -1,0 +1,5 @@
+* text=auto
+*.ps1 text=crlf
+*.csproj text
+*.props text
+*.png binary
