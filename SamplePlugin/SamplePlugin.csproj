@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 示例业务插件：演示与 LoopHost 的集成契约（LoopToolRegistration + 白名单命令 + JSON 磁盘日志）。
+       每次构建生成新 BuildGuid（嵌入 AssemblyMetadata + 写 <dll>.buildguid 边车文件），
+       引擎据此做陈旧检测与热重载。 -->
+  <Import Project="..\AcadRefs.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <RootNamespace>SamplePlugin</RootNamespace>
+    <AssemblyName>SamplePlugin</AssemblyName>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Version>1.0.0</Version>
+    <BuildGuid>$([System.Guid]::NewGuid().ToString("N"))</BuildGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="AcMgd">
+      <HintPath>$(AcadRefs)\AcMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcCoreMgd">
+      <HintPath>$(AcadRefs)\AcCoreMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>$(AcadRefs)\AcDbMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="BuildGuid" Value="$(BuildGuid)" />
+  </ItemGroup>
+
+  <!-- buildguid 边车：引擎/宿主比对磁盘与内存的 BuildGuid，失配即触发业务代重载 -->
+  <Target Name="WriteBuildGuidSidecar" AfterTargets="Build">
+    <WriteLinesToFile File="$(TargetPath).buildguid" Lines="$(BuildGuid)" Overwrite="true" />
+  </Target>
+
+</Project>

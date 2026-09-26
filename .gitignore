@@ -1,0 +1,18 @@
+# build outputs
+bin/
+obj/
+
+# engine runtime state (ledger / runs / last-drawing / crash logs)
+.debug/
+
+# screenshots taken by get_screenshot
+reports/
+
+# machine-local config (keep only .example)
+loop.config.json
+.mcp.json
+
+# IDE
+.vs/
+*.user
+.ipynb_checkpoints/

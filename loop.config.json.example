@@ -1,0 +1,22 @@
+{
+  "_comment": "复制为 loop.config.json 放到两处：LoopEngine exe 旁（引擎读）与 LoopHost.dll 旁（宿主读）。所有键可省略，缺省值见 README 配置表。路径示例按本机实际情况修改。",
+
+  "business_assembly": "SamplePlugin",
+  "business_registration_type": "SamplePlugin.LoopToolRegistration",
+
+  "paths": {
+    "business_dll": "C:/program1/plant3d/acad-mcp-loop/SamplePlugin/bin/Debug/SamplePlugin.dll",
+    "host_dll": "C:/program1/plant3d/acad-mcp-loop/LoopHost/bin/Debug/LoopHost.dll"
+  },
+
+  "build_script": "build.ps1",
+
+  "acad_exe": "C:/Program Files/Autodesk/AutoCAD 2024/acad.exe",
+  "acad_args": "",
+  "drawing": "C:/path/to/your/fixture.dwg",
+
+  "disk_log_dir": "C:/Logs/CadLoop",
+  "disk_log_file_prefix": "SamplePlugin_",
+
+  "shots_dir": "C:/program1/plant3d/acad-mcp-loop/reports/agent-shots"
+}

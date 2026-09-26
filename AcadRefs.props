@@ -1,0 +1,30 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- ============================================================
+       AutoCAD managed reference resolution (AcMgd / AcCoreMgd / AcDbMgd)
+
+       Autodesk DLLs are NOT committed to this repository (license).
+       They are resolved at compile time from, in order:
+         1. MSBuild property  AcadRefs=<dir>          (e.g. -p:AcadRefs=C:\arx\inc)
+         2. Environment var   LOOP_ACAD_REFS=<dir>
+         3. An installed AutoCAD (standard Program Files layout, any version)
+       Any directory containing AcMgd.dll / AcCoreMgd.dll / AcDbMgd.dll works:
+       an installed AutoCAD folder or an extracted ObjectARX SDK `inc` folder.
+       Runtime always resolves them from the AutoCAD process itself
+       (all references are Private=false, nothing is copied to output).
+       ============================================================ -->
+  <PropertyGroup>
+    <AcadRefs Condition="'$(AcadRefs)' == ''">$(LOOP_ACAD_REFS)</AcadRefs>
+    <AcadRefs Condition="'$(AcadRefs)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2026\AcDbMgd.dll')">C:\Program Files\Autodesk\AutoCAD 2026</AcadRefs>
+    <AcadRefs Condition="'$(AcadRefs)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2025\AcDbMgd.dll')">C:\Program Files\Autodesk\AutoCAD 2025</AcadRefs>
+    <AcadRefs Condition="'$(AcadRefs)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2024\AcDbMgd.dll')">C:\Program Files\Autodesk\AutoCAD 2024</AcadRefs>
+    <AcadRefs Condition="'$(AcadRefs)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2023\AcDbMgd.dll')">C:\Program Files\Autodesk\AutoCAD 2023</AcadRefs>
+  </PropertyGroup>
+
+  <!-- Fail with a readable message instead of a cryptic RAR/csc error -->
+  <Target Name="AcadRefsGuard" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(AcadRefs)' == '' Or !Exists('$(AcadRefs)\AcDbMgd.dll')"
+           Text="AutoCAD managed DLLs not found. Point the AcadRefs MSBuild property (or LOOP_ACAD_REFS env var) at a folder containing AcMgd.dll / AcCoreMgd.dll / AcDbMgd.dll — an installed AutoCAD folder or an ObjectARX SDK inc folder. Autodesk DLLs are not redistributed with this repo." />
+  </Target>
+
+</Project>

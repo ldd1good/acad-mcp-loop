@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- AutoCAD 引用解析（AcadRefs 属性 / LOOP_ACAD_REFS 环境变量 / 已安装 acad），见该文件头 -->
+  <Import Project="..\AcadRefs.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <RootNamespace>LoopHost</RootNamespace>
+    <AssemblyName>LoopHost</AssemblyName>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <!-- ★ LoopHost 不参与热重载（求稳）：版本固定，build.ps1 不得递增（见 mcp-loop-engine-plan.md §2.3-6） -->
+    <Version>1.0.0</Version>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 运行时由 acad 进程提供，此处只影响编译期 API（Private=false 不拷贝） -->
+    <Reference Include="AcMgd">
+      <HintPath>$(AcadRefs)\AcMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcCoreMgd">
+      <HintPath>$(AcadRefs)\AcCoreMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>$(AcadRefs)\AcDbMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+</Project>

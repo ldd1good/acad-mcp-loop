@@ -1,0 +1,15 @@
+{
+  "_comment": "MCP 客户端（ZCode / Claude Desktop / Cursor / Cline 等）的 server 注册示例。把 command 改成你机器上 LoopEngine.exe 的绝对路径；LOOP_ACAD_EXE 指向 AutoCAD，LOOP_DRAWING 指向闭环默认图纸。fields 只用 type/command/args/env/description/timeout（多数客户端只接受这几个字段）。",
+  "mcpServers": {
+    "acad-mcp-loop": {
+      "type": "stdio",
+      "command": "C:\\program1\\plant3d\\acad-mcp-loop\\LoopEngine\\bin\\Debug\\net8.0\\LoopEngine.exe",
+      "args": ["--serve"],
+      "env": {
+        "LOOP_ACAD_EXE": "C:\\Program Files\\Autodesk\\AutoCAD 2024\\acad.exe",
+        "LOOP_DRAWING": "C:\\path\\to\\fixture.dwg"
+      },
+      "timeout": 60000
+    }
+  }
+}
