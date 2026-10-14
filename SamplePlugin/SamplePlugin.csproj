@@ -18,8 +18,14 @@
     <Deterministic>true</Deterministic>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <Version>1.0.0</Version>
     <BuildGuid>$([System.Guid]::NewGuid().ToString("N"))</BuildGuid>
+    <!-- ★ 关键：AutoCAD 宿主按 FullName 做字节热重载（同名同版本即 skip）。
+         SamplePlugin 原写死 1.0.0.0 → 首次加载后热重载永久失效。
+         这里把 Revision 派生为 BuildGuid 末 4 位 hex（每次 build 不同），
+         使 FullName 唯一，热重载可反复生效。 -->
+    <BuildGuidTail>$(BuildGuid.Substring(28, 4))</BuildGuidTail>
+    <BuildRevision>$([System.Convert]::ToInt32($(BuildGuidTail), 16))</BuildRevision>
+    <Version>1.0.0.$(BuildRevision)</Version>
   </PropertyGroup>
 
   <ItemGroup>
